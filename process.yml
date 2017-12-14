@@ -1,0 +1,13 @@
+apps:
+  - script   : index.js
+    name     : 'soggy-client'
+    instances: 1
+    exec_mode : fork
+    env    :
+      API_ENDPOINT : localhost:3000
+      DEBUG : 0
+      WATERING_TRIGGER_VALUE : 800
+      WATERING_TIME : 5000
+      MEASURE_INTERVAL : 1800000
+      WATER_TANK_DEPTH : 12
+#      PLANT_ID :
