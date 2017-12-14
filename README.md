@@ -59,6 +59,9 @@ https://diyhacking.com/ultrasonic-arduino-water-level-indicator/
 ## Contribute
 If you like please contribute... Any help appreciated :)
 
+
+![alt text](https://github.com/falsanu/soggy-client/blob/master/doc/soggy-in-action.jpg "Soggy in Action")
+
 ---
 
 <div align="center">
