@@ -27,6 +27,31 @@ send mail additionaly to api call
     
 
 
+### Pin Setup
+
+**Hygro:**
+ 
+ Hygro
+ `{pin: 'A0'}`
+ 
+ Power
+  `{pin: 2}`
+
+**Water**
+
+ Pump
+ `{pin: 4}`
+ 
+ Control LED
+  `{pin: 'A1'}`
+  
+
+
+**Proximity:**
+ 
+ Pin: `{pin: 3}` 
+
+
 
 ## Todo
 - Move to Tessel 2
