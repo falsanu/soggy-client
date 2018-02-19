@@ -8,7 +8,7 @@ const five = require('johnny-five');
 class Planty {
 
 	constructor(opts) {
-		if(!opts.measureInterval) {
+		if (!opts.measureInterval) {
 			throw new Error('No measureInterval given');
 			process.exit(0);
 		}
@@ -22,7 +22,7 @@ class Planty {
 
 	startServer() {
 		let that = this;
-		this.board.on('ready', function() {
+		this.board.on('ready', function () {
 
 			that.waterPump = new WaterPump({
 				wateringTime: that.wateringTime,
@@ -30,31 +30,33 @@ class Planty {
 			});
 			that.hygroMeter = new Hygro();
 
-			that.proximity = new Proximity({verbose:false});
+			that.proximity = new Proximity({
+				verbose: false
+			});
 
 
-			this.loop(that.measureInterval, ()=>{
-				setTimeout(()=>{
-					if(!that.hygroMeter.hasPower) {
+			this.loop(that.measureInterval, () => {
+				setTimeout(() => {
+					if (!that.hygroMeter.hasPower) {
 						console.log('Powering')
 						that.hygroMeter.powerOn();
 					}
-				},100);
+				}, 100);
 
-				setTimeout(()=> {
-					if(that.hygroMeter.hasPower) {
+				setTimeout(() => {
+					if (that.hygroMeter.hasPower) {
 						console.log('Measuring')
 						let counter = 0;
 						let hygroSum = 0;
 
-						var interval  = setInterval(() => {
+						var interval = setInterval(() => {
 
 							that.hygroMeter.hygro.query((state) => {
 								hygroSum += state.value;
 								counter++;
 							});
 
-							if ( counter == 10 ) { // measure 10 times
+							if (counter == 10) { // measure 10 times
 								clearInterval(interval);
 								const aggregatedHygroValue = hygroSum / 10;
 								hygroSum = 0;
@@ -62,13 +64,19 @@ class Planty {
 								let willWater = false;
 								const waterLevel = that.proximity.currentValue;
 
-								if (!that.hasWater()) {
+								if (!that.proximity.hasWater()) {
 									console.log(`WaterLevel low, will not water: ${that.proximity.percentage}`);
+									mailer.sendStatusMail({
+										hygroValue: aggregatedHygroValue,
+										willWater: willWater,
+										waterLevel: that.proximity.percentage,
+										waterAboveGround: that.proximity.waterAboveGround(),
+										hasWater:that.proximity.hasWater()
+									});
 								}
 								//
-								if (aggregatedHygroValue > that.wateringTriggerValue && that.hasWater()) {
+								if (aggregatedHygroValue > that.wateringTriggerValue && that.proximity.hasWater()) {
 									console.log('Plant needs water');
-									mailer.sendStatusMail({'hygroValue':aggregatedHygroValue, 'willWater': willWater, 'waterLevel': that.proximity.percentage});
 									that.waterPump.water();
 									willWater = true;
 								}
@@ -76,7 +84,7 @@ class Planty {
 								dataLogger.logData(aggregatedHygroValue, willWater, that.proximity.percentage);
 								console.log(`Data:: hygro-${aggregatedHygroValue} :: willWater-${willWater} :: waterLevel-${that.proximity.percentage}`);
 
-								if(that.hygroMeter.hasPower) {
+								if (that.hygroMeter.hasPower) {
 									console.log('Switching off')
 									that.hygroMeter.powerOff();
 								}
@@ -85,13 +93,9 @@ class Planty {
 						}, 100);
 
 					}
-				},500);
+				}, 500);
 			})
 		});
-	}
-
-	hasWater() {
-		return this.proximity.percentage > 20;
 	}
 }
 

@@ -17,7 +17,7 @@
     MEASURE_INTERVAL : How often should be measured in ms (the more often you measure, faster corrosion on Hygro)
     PLANT_ID : From API
     WATER_TANK_DEPTH: in cm
-    
+
 send mail additionaly to api call  
 ***gmail** account required
     

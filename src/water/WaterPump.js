@@ -6,7 +6,7 @@ class WaterPump {
 		this.wateringTime = opts.wateringTime ||  1000;
 		this.coolDownTime = opts.coolDownTime || 2000;
 		this.inDebugMode = opts.inDebugMode | false;
-		this.controlLed = new five.Led(4);
+		// this.controlLed = new five.Led('A1');
 		this.waterpump = new five.Led('A1');
 		this.timer = false;
 		this.off();
@@ -41,7 +41,7 @@ class WaterPump {
 			return;
 		}
 		console.log('enabled statusLED');
-		this.controlLed.on();
+		// this.controlLed.on();
 		if(!this.inDebugMode) {
 			console.log('enabled waterPump');
 			this.waterpump.on();
@@ -50,7 +50,7 @@ class WaterPump {
 
 	off() {
 		console.log('disabled statusLED');
-		this.controlLed.off();
+		// this.controlLed.off();
 		if(!this.inDebugMode) {
 			console.log('disabled waterpump');
 			this.waterpump.off();

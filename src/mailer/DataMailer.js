@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const MAILINTERVAL = 3600000;
+const MAILINTERVAL = 60*60*24;
 class DataMailer {
 	constructor(options = {}) {
 		this.user = process.env.MAIL_USER;
@@ -8,8 +8,10 @@ class DataMailer {
 		this.isActive = options.isActive || false;
 		this.mailIntervalActive = false;
 
+		this.hasWaterWarning = '';
 
-		if(!this.user || !this.pass) {
+
+		if (!this.user || !this.pass) {
 			this.isActive = false;
 			return;
 		}
@@ -24,9 +26,9 @@ class DataMailer {
 		});
 	}
 
-	sendStatusMail(hygroValue) {
+	sendStatusMail(data) {
 
-		if(!this.isActive) {
+		if (!this.isActive) {
 			console.log('Mailer not active');
 			return;
 		}
@@ -40,24 +42,31 @@ class DataMailer {
 			this.mailIntervalActive = false;
 		}, MAILINTERVAL);
 
+		if(!data.hasWater) {
+			this.hasWaterWarning = `<h2 style='color:red'>Die Pflanze braucht Wasser</h2>`;
+		}
+
 		console.log('Trying to send data');
 		// setup email data with unicode symbols
 		let mailOptions = {
 			from: `"Plant Status 🌱" <${this.user}>`, // sender address
 			to: this.receiver, // list of receivers
 			subject: 'Deine Pflanze braucht Dich!', // Subject line
-			text: 'Current Status: ' + hygroValue.value, // plain text body
+			text: 'Current Status: ' + data.hygroValue, // plain text body
 			html: `<h1>Aktueller Status der Pflanze</h1>
 				<br/>
 				<br/>
 				<br/>
 				<br/>
-              <h3>Aktueller Feuchtigkeitswert: ${hygroValue.value}</h3>
+				${this.hasWaterWarning}
+				<h3>Aktueller Wasserpegel: ${Math.round(data.waterAboveGround)} mm (${Math.round(data.waterLevel)}%)</h3>
+			  	<h3>Aktueller Feuchtigkeitswert: ${data.hygroValue}</h3>
+			  
               <table width="100%">
               <tr>
               <td>
               <pre width="100%">
-              	${JSON.stringify(hygroValue)}
+${JSON.stringify(data)}
               </pre>
 			  </td>
 			  </tr>
@@ -75,4 +84,4 @@ class DataMailer {
 	}
 }
 
-module.exports = new DataMailer();
+module.exports = DataMailer;

@@ -10,7 +10,10 @@
   "author": "Jan Fanslau",
   "license": "ISC",
   "dependencies": {
-    "johnny-five": "^0.11.3",
-    "request": "^2.81.0"
+    "johnny-five": "^0.13.0",
+    "nodebots-hcsr04": "git+https://github.com/ajfisher/nodebots-hcsr04.git",
+    "nodebots-interchange": "^1.1.6",
+    "nodemailer": "^4.4.2",
+    "request": "^2.83.0"
   }
 }
