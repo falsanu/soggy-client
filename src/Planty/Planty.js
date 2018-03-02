@@ -2,7 +2,7 @@ const WaterPump = require('../water/WaterPump');
 const Hygro = require('../hygro/Hygro');
 const Proximity = require('../proximity/Proximity');
 const dataLogger = require('../dataLogger/DataLogger');
-const mailer = require('../mailer/DataMailer');
+const DataMailer = require('../mailer/DataMailer');
 const five = require('johnny-five');
 
 class Planty {
@@ -16,7 +16,7 @@ class Planty {
 		this.wateringTriggerValue = opts.wateringTriggerValue || 700;
 		this.wateringTime = opts.wateringTime || 1000;
 		this.debugMode = opts.debugMode || false;
-
+		this.mailer = new DataMailer({isActive:true})
 		this.board = new five.Board();
 	}
 
@@ -66,7 +66,7 @@ class Planty {
 
 								if (!that.proximity.hasWater()) {
 									console.log(`WaterLevel low, will not water: ${that.proximity.percentage}`);
-									mailer.sendStatusMail({
+									this.mailer.sendStatusMail({
 										hygroValue: aggregatedHygroValue,
 										willWater: willWater,
 										waterLevel: that.proximity.percentage,

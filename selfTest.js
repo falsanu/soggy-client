@@ -22,9 +22,9 @@ class SelfCheck {
 		this.hygroValue = 0;
 		
 		this.mailer = new DataMailer({isActive:true})
-		setTimeout(() => {
-			this.checkMailer();	
-		}, 5000);
+		// setTimeout(() => {
+		// 	this.checkMailer();	
+		// }, 5000);
 		
 
 		this.board.on('ready', function () {
@@ -38,42 +38,21 @@ class SelfCheck {
 
 			that.proximity = new Proximity({waterTankDepth:150, minWaterLevel:40});
 
+			that.proximity.verbose=false;
 
 			that.display='water';
 			that.displayCounter = 0;
+			// that.waterPump.water();
 			this.loop(90,()=>{
 
-				if(that.display == 'water') {
-					// that.waterPump.water();
-					that.display = 'proximity';
-					that.proximity.verbose=true;
-				}
+					
+					// that.proximity.verbose=true;
 
-
-				if(that.display == 'proximity') {
-					that.displayCounter++
-					if(that.displayCounter == 10) {
-						that.display = 'hygro';
-						that.displayCounter = 0;
-						that.proximity.verbose=true;
-					}
-
-				}
-
-				if(that.display == 'hygro') {
-					that.hygroMeter.measure();
-					console.log(`HygroValue: ${that.hygroMeter.currentValue}`)
-					that.displayCounter++
-					// that.hygroMeter.hygro.query((state) => {
-					// 	that.hygroValue = state.value;
-					// 	console.log(`HygroValue: ${state.value}`)
-					// 	that.displayCounter++
-					// });
-					if(that.displayCounter == 10) {
-						that.display = 'proximity';
-						that.displayCounter = 0;
-					}
-				}
+					that.hygroMeter.hygro.query(state=>{
+							console.log(`HygroValue: ${state.value}`)
+					});
+					
+					
 			})
 			// that.run().bind(that)
 		});
@@ -121,17 +100,17 @@ class SelfCheck {
 		})
 	}
 
-	checkMailer() {
+	// checkMailer() {
 
-		this.mailer.sendStatusMail({
-			hygroValue: this.hygroMeter.currentValue,
-			willWater: false,
-			waterLevel: this.proximity.percentage,
-			waterAboveGround: this.proximity.waterAboveGround(),
-			hasWater:this.proximity.hasWater()
-		});
+	// 	this.mailer.sendStatusMail({
+	// 		hygroValue: this.hygroMeter.currentValue,
+	// 		willWater: false,
+	// 		waterLevel: this.proximity.percentage,
+	// 		waterAboveGround: this.proximity.waterAboveGround(),
+	// 		hasWater:this.proximity.hasWater()
+	// 	});
 
-	}
+	// }
 }
 
 let selfCheck = new SelfCheck()

@@ -9,6 +9,7 @@ class Hygro {
 		this.hygroPower.high();
 		this.hasPower = false;
 		this.currentValue = 0;
+		this.isMeasuring = false;
 		return this;
 	}
 
@@ -28,10 +29,14 @@ class Hygro {
 		return this.hygro.query;
 	}
 	measure(){
+		
 		let that= this;
-		this.hygro.query(state=>{
-			that.currentValue = state.value
-		});
+		// if(!this.isMeasuring){
+			this.hygro.query(state=>{
+				that.currentValue = state.value
+			});
+			this.isMeasuring = true;
+		// }
 	}
 	value(){
 		return this.currentValue
