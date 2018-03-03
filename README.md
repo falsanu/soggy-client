@@ -16,8 +16,8 @@
     WATERING_TIME : in MS (5000 is a good value)
     MEASURE_INTERVAL : How often should be measured in ms (the more often you measure, faster corrosion on Hygro)
     PLANT_ID : From API
-    WATER_TANK_DEPTH: in cm
-
+    WATER_TANK_DEPTH: in mm
+    MIN_WATER_LEVEL : in mm
 send mail additionaly to api call  
 ***gmail** account required
     
@@ -35,26 +35,21 @@ send mail additionaly to api call
  `{pin: 'A0'}`
  
  Power
-  `{pin: 2}`
+  `{pin: 3}`
 
 **Water**
 
  Pump
- `{pin: 4}`
+ `{pin: A1}`
  
- Control LED
-  `{pin: 'A1'}`
-  
-
 
 **Proximity:**
  
- Pin: `{pin: 3}` 
+ Pin: `{pin: 2}` 
 
 
 
 ## Todo
-- Move to Tessel 2
 - Create Authentification Stuff
 - Create initialization Script
 - Create secure crash system // Shut down all pins
@@ -90,5 +85,5 @@ If you like please contribute... Any help appreciated :)
 ---
 
 <div align="center">
-  <sub>Created with ❤️ by <a href="https://twitter.com/falsanu">Jan Fanslau</a> </sub>
+  <sub>Created with ❤️ by <a href="https://janfanslau.com">Jan Fanslau</a> </sub>
 </div>
